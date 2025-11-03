@@ -6,8 +6,6 @@ moveit_simple_controller_manager:
   controller_names:
     - arm_controller
     - head_controller
-    - torso_controller
-    - upper_body_controller
     - gripper_controller
 
   arm_controller:
@@ -21,33 +19,19 @@ moveit_simple_controller_manager:
       - forearm_roll_joint
       - wrist_flex_joint
       - wrist_roll_joint
+    action_ns: follow_joint_trajectory
+    default: true
   head_controller:
     type: FollowJointTrajectory
     joints:
-      - torso_lift_joint
       - head_pan_joint
       - head_tilt_joint
-  torso_controller:
-    type: FollowJointTrajectory
-    joints:
-      - torso_lift_joint
-  upper_body_controller:
-    type: FollowJointTrajectory
-    joints:
-      - torso_lift_joint
-      - head_pan_joint
-      - head_tilt_joint
-      - shoulder_pan_joint
-      - shoulder_lift_joint
-      - upperarm_roll_joint
-      - elbow_flex_joint
-      - forearm_roll_joint
-      - wrist_flex_joint
-      - wrist_roll_joint
+    action_ns: follow_joint_trajectory
+    default: true
   gripper_controller:
     type: GripperCommand
     joints:
-      - wrist_roll_joint
+      - l_gripper_finger_joint
       - r_gripper_finger_joint
     action_ns: gripper_cmd
     default: true

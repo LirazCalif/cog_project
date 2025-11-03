@@ -11,24 +11,8 @@ controller_manager:
       type: joint_trajectory_controller/JointTrajectoryController
 
 
-    torso_controller:
-      type: joint_trajectory_controller/JointTrajectoryController
-
-
-    diff_drive_controller:
-      type: joint_trajectory_controller/JointTrajectoryController
-
-
     gripper_controller:
       type: position_controllers/GripperActionController
-
-
-    upper_body_controller:
-      type: joint_trajectory_controller/JointTrajectoryController
-
-
-    all_controller:
-      type: joint_trajectory_controller/JointTrajectoryController
 
 
     joint_state_broadcaster:
@@ -46,74 +30,18 @@ arm_controller:
       - wrist_flex_joint
       - wrist_roll_joint
     command_interfaces:
-      - position
+      []
     state_interfaces:
-      - position
-      - velocity
+      []
 head_controller:
   ros__parameters:
     joints:
-      - torso_lift_joint
       - head_pan_joint
       - head_tilt_joint
-    command_interfaces:
-      - position
-    state_interfaces:
-      - position
-      - velocity
-torso_controller:
-  ros__parameters:
-    joints:
-      - torso_lift_joint
-    command_interfaces:
-      - position
-    state_interfaces:
-      - position
-      - velocity
-diff_drive_controller:
-  ros__parameters:
-    joints:
-      []
     command_interfaces:
       []
     state_interfaces:
       []
 gripper_controller:
   ros__parameters:
-    joint: wrist_roll_joint
-upper_body_controller:
-  ros__parameters:
-    joints:
-      - torso_lift_joint
-      - head_pan_joint
-      - head_tilt_joint
-      - shoulder_pan_joint
-      - shoulder_lift_joint
-      - upperarm_roll_joint
-      - elbow_flex_joint
-      - forearm_roll_joint
-      - wrist_flex_joint
-      - wrist_roll_joint
-    command_interfaces:
-      - position
-    state_interfaces:
-      - position
-      - velocity
-all_controller:
-  ros__parameters:
-    joints:
-      - torso_lift_joint
-      - head_pan_joint
-      - head_tilt_joint
-      - shoulder_pan_joint
-      - shoulder_lift_joint
-      - upperarm_roll_joint
-      - elbow_flex_joint
-      - forearm_roll_joint
-      - wrist_flex_joint
-      - wrist_roll_joint
-    command_interfaces:
-      - position
-    state_interfaces:
-      - position
-      - velocity
+    joint: l_gripper_finger_joint
