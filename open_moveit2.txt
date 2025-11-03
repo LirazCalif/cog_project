@@ -1,0 +1,4 @@
+cd ~/webots_projects\/my_fetch_project/controllers/fetch_controller
+source install/setup.bash
+source /opt/ros/humble/setup.bash
+ros2 launch fetch_description demo.launch.py
