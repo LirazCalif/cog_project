@@ -1,0 +1,44 @@
+# === Webots ===
+*.log
+*.wbo
+*.tmp
+.cache/
+build/
+
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === Python bytecode ===
+__pycache__/
+*.pyc
+
+# === VS Code ===
+.vscode/
+
+# Ignore large folders and irrelevant files
+ros2_ws/
+code/
+images/
+annotations/
+checkpoints/
+converted_labels/
+labels/
+lidar_data/
+motion/
+pddl/
+perception/
+planners/
+results/
+validation_images/
+yolo_labels/
+fetch_files/
+venv/
+__pycache__/
+*.pyc
+*.log
+*.deb
+*.zip
+*.tar
+*.gz
+

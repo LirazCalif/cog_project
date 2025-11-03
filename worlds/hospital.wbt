@@ -1,0 +1,726 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/apartment_structure/protos/Wall.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/kitchen/fridge/protos/Fridge.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/hospital/protos/HospitalBed.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/cabinet/protos/Cabinet.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/tables/protos/Table.proto"
+EXTERNPROTO "../protos/fetch_webots.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/apartment_structure/protos/Door.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/Floor.proto"
+EXTERNPROTO "../protos/MedicineBottle.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.16383853789003094 -0.03855636587690291 0.9857334021693815 3.67832536995929
+  position -3.112809387342611 -2.6727269637123143 2.82285224235876
+}
+Floor {
+  size 20 20
+}
+Group {
+  children [
+    Door {
+      hidden translation_5 0.0012129205799584208 6.673741449653159e-05 3.3306690738754696e-16
+      hidden rotation_5 0 0 -1 0.00044822235623731685
+      translation -8.83 5 -0.04
+      rotation 0 0 1 -1.5707953071795862
+      position -0.0047338438567791396
+    }
+  ]
+}
+Group {
+  children [
+    Wall {
+      translation -2.40003 -0.57 0
+      rotation 0 0 1 1.5707996938995747
+      name "wall(19)"
+      size 0.2 15 2.5
+    }
+    Wall {
+      translation -9.63 5 0
+      rotation 0 0 1 1.5708
+      name "wall(12)"
+      size 0.2 0.6 2.4
+    }
+    Wall {
+      translation -7.58 5 0
+      rotation 0 0 1 1.5708
+      name "wall(11)"
+      size 0.2 1.5 2.4
+    }
+    Wall {
+      translation 0.65 -4.8 0
+      rotation 0 0 1 1.5708
+      name "wall(18)"
+      size 0.2 2.5 2.4
+    }
+    Wall {
+      translation -4.14 5 0
+      rotation 0 0 1 1.5708
+      name "wall(9)"
+      size 0.2 2.5 2.4
+    }
+    Wall {
+      translation 4.55 -5.01 0
+      rotation 0 0 1 1.5708
+      name "wall(15)"
+      size 0.2 2.5 2.4
+    }
+    Wall {
+      translation 4.55 5 0
+      rotation 0 0 1 1.5708
+      name "wall(8)"
+      size 0.2 2.5 2.4
+    }
+    Wall {
+      translation 8.66 -5 0
+      rotation 0 0 1 1.5708
+      name "wall(13)"
+      size 0.2 2.5 2.4
+    }
+    Wall {
+      translation 8.66 5 0
+      rotation 0 0 1 1.5708
+      name "wall(5)"
+      size 0.2 2.5 2.4
+    }
+    Wall {
+      translation -2.35 -7.4 0
+      name "wall(17)"
+      size 0.2 5 2.4
+    }
+    Wall {
+      translation -2.95 7.5 0
+      name "wall(7)"
+      size 0.2 5 2.4
+    }
+    Wall {
+      translation -6.92 7.5 0
+      name "wall(10)"
+      size 0.2 5 2.4
+    }
+    Wall {
+      translation 1.8 -7.4 0
+      name "wall(16)"
+      size 0.2 5 2.4
+    }
+    Wall {
+      translation 1.8 7.5 0
+      name "wall(6)"
+      size 0.2 5 2.4
+    }
+    Wall {
+      translation 5.75 -7.43 0
+      name "wall(14)"
+      size 0.2 5 2.4
+    }
+    Wall {
+      translation 5.75 7.5 0
+      name "wall(4)"
+      size 0.2 5 2.4
+    }
+  ]
+}
+Group {
+  children [
+    Wall {
+      translation 0 -10 0
+      rotation 0 0 1 1.5707996938995747
+      name "wall(3)"
+      size 0.2 20 2.5
+    }
+    DEF flacon MedicineBottle {
+      translation -9.311928902455485 -9.179561989809574 0.4779826143048946
+      rotation -0.00066109306883724 -0.03338718997244342 -0.9994422737215485 0.025382550388693047
+      name "medicine bottle(25)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.3 -9.1 0.47796075999897797
+      rotation -0.19515100843696825 0.980431863737797 0.02587362505843062 1.1294418588565724e-14
+      name "medicine bottle(26)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    Wall {
+      translation 0 10 0
+      rotation 0 0 1 1.5708003061004252
+      name "wall(2)"
+      size 0.2 20 2.5
+    }
+    Wall {
+      translation -10 0 0
+      rotation 0 1 0 4.692820414042842e-06
+      name "wall(1)"
+      size 0.2 20 2.5
+    }
+    Wall {
+      translation 10 0 0
+      rotation 0 1 0 4.692820414042842e-06
+      size 0.2 20 2.5
+    }
+  ]
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Fridge {
+  hidden position_0_0 -0.00013171645019422647
+  hidden position_0_1 0.00013171650867811792
+  hidden rotation_1 0 0 -1 0.0001317164507475073
+  hidden rotation_2 0 0 0.9999999999999999 0.00013171650806392365
+  translation 1.17999 9.5 0
+  rotation 0 0 1 -1.5707953071795862
+}
+Group {
+  children [
+    HospitalBed {
+      translation 9.1 -8.46 0.28
+      name "hospital bed(5)"
+    }
+    HospitalBed {
+      translation 4.71 -8.46 0.28
+      name "hospital bed(4)"
+    }
+    HospitalBed {
+      translation 0.85 -8.46 0.28
+      name "hospital bed(3)"
+    }
+    HospitalBed {
+      translation 4.89 8.46 0.28
+      rotation 0 0 1 3.14159
+      name "hospital bed(1)"
+    }
+    HospitalBed {
+      translation -3.88 8.46 0.28
+      rotation 0 0 1 3.14159
+      name "hospital bed(2)"
+    }
+    HospitalBed {
+      translation 9.11 8.46 0.28
+      rotation 0 0 1 3.14159
+    }
+  ]
+}
+fetch_webots {
+  hidden position_0_0 0.018495381396460776
+  hidden position_0_1 -0.01956329220763283
+  hidden position_0_2 -0.0002841020524533297
+  hidden linearVelocity_0 0.0023248355025537256 0.0022074987202834935 -0.0021313090807985593
+  hidden angularVelocity_0 -0.02080768450299535 0.021963960074786293 -5.956330237819193e-05
+  hidden rotation_1 0 1 0 0.018495381396470723
+  hidden linearVelocity_1 0.0013105986510185748 0.0012448913037053037 -0.00028507626974250084
+  hidden angularVelocity_1 -0.02081491597715896 0.0219297800936631 -0.00014607829305589838
+  hidden rotation_2 0 -1 0 0.01956329220763092
+  hidden linearVelocity_2 0.0013145191519859 0.001228913715606995 -0.0018844530433039766
+  hidden angularVelocity_2 -0.020816256227938836 0.021927521930080483 -0.00014767727894661738
+  hidden translation_3 -0.086875 0 0.37714589794754666
+  hidden position_3_0 4.860662882417696e-06
+  hidden position_3_1 0.49987482149748275
+  hidden position_3_2 5.9637435902275555e-06
+  hidden linearVelocity_3 0.014648463119129766 0.013906040258663058 -0.003836875374303242
+  hidden angularVelocity_3 -0.020826453310793313 0.02194388008299596 -0.00013612559755794883
+  hidden rotation_4 0 0 1 4.86070305022377e-06
+  hidden position_4_0 1.4559260336798924e-07
+  hidden linearVelocity_4 0.022421607450656033 0.021304454127360303 -0.0013049074929470706
+  hidden angularVelocity_4 -0.02083900858299613 0.021944254787824604 -0.00023448629347937262
+  hidden rotation_5 0 0.9999999999999999 0 1.4600096599955432e-07
+  hidden linearVelocity_5 0.0230619062690885 0.02195104013404212 0.00230620628818111
+  hidden angularVelocity_5 -0.020839295946224395 0.02194448145126962 -0.00023448100802263795
+  hidden rotation_6 0 0 1 0.4998748214974827
+  hidden position_6_0 6.047738232980726e-05
+  hidden linearVelocity_6 0.01709679956524351 0.01639081497189252 0.0020935030512785773
+  hidden angularVelocity_6 -0.020824580579262446 0.021950874086173043 -0.0013810598654293584
+  hidden rotation_7 0 1 0 6.047737927137132e-05
+  hidden position_7_0 5.882178213030693e-05
+  hidden linearVelocity_7 0.016940403577295402 0.016471950864633628 0.00586750401154889
+  hidden angularVelocity_7 -0.02082315449053597 0.02195062925951907 -0.0013725184412579543
+  hidden rotation_8 1 0 0 5.882178221448184e-05
+  hidden position_8_0 2.3723653245285206e-05
+  hidden linearVelocity_8 0.01667572697185893 0.01650902273101361 0.010580786095778841
+  hidden angularVelocity_8 -0.02091476543916915 0.02136167718453391 -0.0013702731069750841
+  hidden rotation_9 0 1 0 2.3723659482001875e-05
+  hidden position_9_0 1.8825701085525656e-05
+  hidden linearVelocity_9 0.01647448938809093 0.016521289781948657 0.013933377370425151
+  hidden angularVelocity_9 -0.020912074164161427 0.021361248023906758 -0.001366655320583777
+  hidden rotation_10 1 0 0 1.8825705040722873e-05
+  hidden position_10_0 5.304931077430897e-06
+  hidden linearVelocity_10 0.01622948273263384 0.016590003037613883 0.018817214800496633
+  hidden angularVelocity_10 -0.020940872740276444 0.021176613523578545 -0.0013658925691625683
+  hidden rotation_11 0 1 0 5.304897098739519e-06
+  hidden position_11_0 -2.2944653736827004e-06
+  hidden linearVelocity_11 0.016077818057328597 0.01656492591894775 0.02079729330595431
+  hidden angularVelocity_11 -0.020940772370922296 0.021176595918060894 -0.0013650383771443837
+  hidden rotation_12 1 0 0 1.3797702829506743e-05
+  hidden linearVelocity_12 0.015874149062344755 0.016550625016475935 0.02371846642634718
+  hidden angularVelocity_12 -0.020937344034715394 0.021198714843493036 -0.0013646910566590797
+  hidden position_13_0 0.04999996167647391
+  hidden position_13_1 0.050000136204133606
+  hidden translation_14 0 0.0654249616764739 0
+  hidden linearVelocity_14 0.01577165438845294 0.016506892119970307 0.024605031532976683
+  hidden angularVelocity_14 -0.020937344232994922 0.021198715851278173 -0.0013646818390505018
+  hidden translation_15 0 -0.06542513620413362 0
+  hidden linearVelocity_15 0.015796890301936 0.016681209937281796 0.0269246382229549
+  hidden angularVelocity_15 -0.020937344580307778 0.02119871668629251 -0.0013646871681155552
+  hidden translation_16 0 0 -5.9637435902275555e-06
+  hidden linearVelocity_16 0.005390095623097488 0.005122883984713256 -0.0032882486889617532
+  hidden angularVelocity_16 -0.020826432052475558 0.02194386172250051 -0.00013612553955171495
+  translation -8.223189347048455 -6.25430456961975 -0.0033785327955742905
+  rotation -0.0015923951200321493 -0.0016081465962859438 0.9999974390678741 -2.2252084656514795
+  controller "fetch_controller"
+  controllerArgs [
+    ""
+    ""
+  ]
+}
+Group {
+  children [
+    Cabinet {
+      hidden position_6_0 -9.595462851486047e-05
+      hidden translation_7 9.547485522577539e-05 -4.5806270998483e-09 0
+      hidden rotation_7 0 0 -1 9.595462954671047e-05
+      hidden position_10_0 -9.595462851391706e-05
+      hidden translation_11 -9.547485522483668e-05 4.5806270998483e-09 0
+      hidden rotation_11 0 0 -0.9999999999999999 9.595462954671047e-05
+      hidden position_14_0 -2.664569876422552e-13
+      hidden position_22_0 -2.664569876422552e-13
+      hidden position_30_0 -2.664569876422552e-13
+      hidden position_38_0 -3.9968749301781263e-13
+      translation -6.37 -9.88 -5.94569e-09
+      rotation 9.58976e-09 9.58979e-09 -1 -1.5707953071795862
+      name "cabinet(1)"
+      rowsHeights [
+        0.2, 0.2, 0.2, 0.2, 0.2
+      ]
+      columnsWidths [
+        2, 1, 1
+      ]
+    }
+    Cabinet {
+      hidden position_6_0 9.595462851251087e-05
+      hidden translation_7 -9.547485522343753e-05 -4.5806270998483e-09 0
+      hidden rotation_7 0 0 1 9.595462954671047e-05
+      hidden position_10_0 -9.595462851169405e-05
+      hidden translation_11 -9.547485522262479e-05 4.5806270998483e-09 0
+      hidden rotation_11 0 0 -0.9999999999999999 9.595462954671047e-05
+      translation -9.66881 -7.71845 0
+      rowsHeights [
+        0.2, 0.2, 0.2, 0.2, 0.2
+      ]
+      columnsWidths [
+        2, 1, 1
+      ]
+    }
+    Table {
+      translation -7.06 -6.29 0
+      rotation 0 0 1 3.14159
+      name "table(1)"
+      size 1 2.5 0.74
+    }
+    Table {
+      translation -4.56 -5.53 0
+      rotation 0 0 1 -1.5707953071795862
+      size 1 4 0.74
+    }
+  ]
+}
+Group {
+  children [
+    DEF flacon MedicineBottle {
+      translation -9.6 -7.2 0.8779607599999999
+      rotation 0.17029658450147556 0.985287381758536 -0.014416957187305436 8.092784066120862e-15
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.6 -9.6 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(1)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.5 -9.6 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(2)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.4 -9.6 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(3)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.3 -9.6 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(4)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.6 -9.5 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(5)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.5 -9.5 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(6)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.4 -9.5 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(7)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.3 -9.5 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(8)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.6 -9.4 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(9)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.5 -9.4 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(13)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.4 -9.4 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(14)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.3 -9.4 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(15)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.6 -9.3 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(10)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.5 -9.3 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(16)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.4 -9.3 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(17)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.3 -9.3 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(18)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.6 -9.2 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(11)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.5 -9.2 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(12)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.4 -9.2 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(19)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.3 -9.2 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(20)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.6 -9.1 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(21)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.5 -9.1 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(22)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.4 -9.1 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(23)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+    DEF flacon MedicineBottle {
+      translation -9.3 -9.1 0.8779607599999999
+      rotation 0.024550617384045577 0.9996270248069956 0.011961540936526183 1.0366578608561457e-14
+      name "medicine bottle(24)"
+      physics Physics {
+        mass 0.2
+        centerOfMass [
+          0 0 0
+        ]
+        inertiaMatrix [
+          1 0 0
+          0 1 0
+        ]
+      }
+    }
+  ]
+}

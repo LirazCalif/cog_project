@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+*.deb
+
+# Webots / simulation / build
+*.log
+*.wbo
+*.tmp
+.cache/
+build/
+
+# ROS / project data
+ros2_ws/
+results/
+motion/
+perception/
+pddl/
+planners/
+validation_images/
+yolo_labels/
+labels/
+lidar_data/
+images/
+annotations/
+checkpoints/
+fetch_files/
+code/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+

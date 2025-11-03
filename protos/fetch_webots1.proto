@@ -1,0 +1,312 @@
+#VRML_SIM R2025a utf8
+# license: Apache License 2.0
+# license url: http://www.apache.org/licenses/LICENSE-2.0 
+# This is a proto file for Webots for the fetch_webots 
+# Extracted from: C:/Users/Liraz Calif/Documents/FetchURDF/fetch.urdf
+
+PROTO fetch_webots [
+  field  SFVec3f     translation     0 0 0
+  field  SFRotation  rotation        0 0 1 0
+  field  SFString    name            "fetch_webots"  # Is `Robot.name`.
+  field  SFString    controller      "void"          # Is `Robot.controller`.
+  field  MFString    controllerArgs  []              # Is `Robot.controllerArgs`.
+  field  SFString    customData      ""              # Is `Robot.customData`.
+  field  SFBool      supervisor      FALSE           # Is `Robot.supervisor`.
+  field  SFBool      synchronization TRUE            # Is `Robot.synchronization`.
+  field  SFBool      selfCollision   FALSE           # Is `Robot.selfCollision`.
+]
+{
+  Robot {
+    translation IS translation
+    rotation IS rotation
+    controller IS controller
+    controllerArgs IS controllerArgs
+    customData IS customData
+    supervisor IS supervisor
+    synchronization IS synchronization
+    selfCollision IS selfCollision
+    children [
+      DEF base_link_visual CadShape {
+        url "fetch_description/meshes/base_link.dae"
+      }
+      HingeJoint {
+        jointParameters HingeJointParameters {
+          axis 0 1 0
+          anchor 0.001291 -0.18738 0.055325
+        }
+        device [
+          RotationalMotor {
+            name "r_wheel_joint"
+            maxVelocity 17.4
+            maxTorque 8.85
+          }
+          PositionSensor {
+            name "r_wheel_joint_sensor"
+          }
+        ]
+        endPoint Solid {
+          translation 0.001291 -0.18738 0.055325
+          children [
+            Shape {
+              appearance DEF r_wheel_link_material PBRAppearance {
+                baseColor 0.086 0.506 0.767
+                roughness 1
+                metalness 0
+              }
+              geometry DEF r_wheel_link Mesh {
+                url "fetch_description/meshes/r_wheel_link.STL"
+              }
+            }
+          ]
+          name "r_wheel_link"
+          boundingObject DEF r_wheel_link_collision Mesh {
+            url "fetch_description/meshes/r_wheel_link_collision.STL"
+          }
+          physics Physics {
+            density -1
+            mass 4.3542
+            centerOfMass [0 0 0]
+            inertiaMatrix [
+              0.0045 0.005 0.0045
+              0 0 0
+            ]
+          }
+        }
+      }
+      HingeJoint {
+        jointParameters HingeJointParameters {
+          axis 0 1 0
+          anchor 0.001291 0.18738 0.055325
+        }
+        device [
+          RotationalMotor {
+            name "l_wheel_joint"
+            maxVelocity 17.4
+            maxTorque 8.85
+          }
+          PositionSensor {
+            name "l_wheel_joint_sensor"
+          }
+        ]
+        endPoint Solid {
+          translation 0.001291 0.18738 0.055325
+          children [
+            Shape {
+              appearance DEF l_wheel_link_material PBRAppearance {
+                baseColor 0.086 0.506 0.767
+                roughness 1
+                metalness 0
+              }
+              geometry DEF l_wheel_link Mesh {
+                url "fetch_description/meshes/l_wheel_link.STL"
+              }
+            }
+          ]
+          name "l_wheel_link"
+          boundingObject DEF l_wheel_link_collision Mesh {
+            url "fetch_description/meshes/l_wheel_link_collision.STL"
+          }
+          physics Physics {
+            density -1
+            mass 4.3542
+            centerOfMass [0 0 0]
+            inertiaMatrix [
+              0.0045 0.005 0.0045
+              0 0 0
+            ]
+          }
+        }
+      }
+
+      SliderJoint {
+        jointParameters JointParameters {
+          axis 0 0 1
+          dampingConstant 100
+        }
+        device [
+          LinearMotor {
+            name "torso_lift_joint"
+            maxVelocity 0.1
+            maxPosition 0.38615
+            maxForce 450
+          }
+          PositionSensor {
+            name "torso_lift_joint_sensor"
+          }
+        ]
+        endPoint Solid {
+          translation -0.086875 0 0.37743
+          children [
+            DEF torso_lift_link_visual CadShape {
+              url "fetch_description/meshes/torso_lift_link.dae"
+            }
+
+            # --- HEAD JOINTS ---
+            HingeJoint {
+              jointParameters HingeJointParameters {
+                axis 0 0 1
+                anchor 0.053125 0 0.603001
+              }
+              device [
+                RotationalMotor {
+                  name "head_pan_joint"
+                  maxVelocity 1.57
+                  minPosition -1.57
+                  maxPosition 1.57
+                  maxTorque 0.32
+                }
+                PositionSensor {
+                  name "head_pan_joint_sensor"
+                }
+              ]
+              endPoint Solid {
+                translation 0.053125 0 0.603001
+                children [
+                  DEF head_pan_link_visual CadShape {
+                    url "fetch_description/meshes/head_pan_link.dae"
+                  }
+                  HingeJoint {
+                    jointParameters HingeJointParameters {
+                      axis 0 1 0
+                      anchor 0.14253 0 0.057999
+                    }
+                    device [
+                      RotationalMotor {
+                        name "head_tilt_joint"
+                        maxVelocity 1.57
+                        minPosition -0.76
+                        maxPosition 1.45
+                        maxTorque 0.68
+                      }
+                      PositionSensor {
+                        name "head_tilt_joint_sensor"
+                      }
+                    ]
+                    endPoint Solid {
+                      translation 0.14253 0 0.057999
+                      children [
+                        DEF head_tilt_link_visual CadShape {
+                          url "fetch_description/meshes/head_tilt_link.dae"
+                        }
+                      ]
+                      name "head_tilt_link"
+                      boundingObject DEF head_tilt_link_collision Mesh {
+                        url "fetch_description/meshes/head_tilt_link_collision.STL"
+                      }
+                      physics Physics {
+                        density -1
+                        mass 0.9087
+                        centerOfMass [0.0081 0.0025 0.0113]
+                        inertiaMatrix [
+                          0.0061 0.0014 0.0061
+                          0 0.0002 -0.0001
+                        ]
+                      }
+                    }
+                  }
+                ]
+                name "head_pan_link"
+                boundingObject DEF head_pan_link_collision Mesh {
+                  url "fetch_description/meshes/head_pan_link_collision.STL"
+                }
+                physics Physics {
+                  density -1
+                  mass 2.2556
+                  centerOfMass [0.0321 0.0161 0.039]
+                  inertiaMatrix [
+                    0.0129 0.0095 0.0184
+                    0.0002 0.0007 0
+                  ]
+                }
+              }
+            }
+
+            # --- Add the rest of joints here in same style ---
+            # All URLs must use forward slashes /
+            # All joint definitions remain identical
+          ]
+          name "torso_lift_link"
+          boundingObject DEF torso_lift_link_collision Mesh {
+            url "fetch_description/meshes/torso_lift_link_collision.STL"
+          }
+          physics Physics {
+            density -1
+            mass 10.7796
+            centerOfMass [-0.0013 -0.0009 0.2935]
+            inertiaMatrix [
+              0.3354 0.3354 0.0954
+              0  -0.0162 -0.0006
+            ]
+          }
+        }
+      }
+
+      # --- SOLIDS ---
+      Solid {
+        translation -0.12465 0.23892 0.31127
+        rotation 1 0 0 1.5708
+        children [
+          DEF estop_link_visual CadShape {
+            url "fetch_description/meshes/estop_link.dae"
+          }
+        ]
+        name "estop_link"
+        boundingObject DEF estop_link Mesh {
+          url "fetch_description/meshes/estop_link.STL"
+        }
+        physics Physics {
+          density -1
+          mass 0.001961
+          centerOfMass [0.002435 -0.003306 0.006651]
+          inertiaMatrix [
+            3.0281e-07 2.933229e-07 2.285133e-07
+            -1.586202e-08 3.165614e-08 -4.288335e-08
+          ]
+        }
+      }
+
+      Solid {
+        translation 0.235 0 0.2878
+        rotation 1 0 0 -0.000001
+        children [
+          Shape {
+            appearance DEF laser_link_material PBRAppearance {
+              baseColor 0.792157 0.819608 0.933333
+              roughness 1
+              metalness 0
+            }
+            geometry DEF laser_link Mesh {
+              url "fetch_description/meshes/laser_link.STL"
+            }
+          }
+        ]
+        name "laser_link"
+        boundingObject USE laser_link
+        physics Physics {
+          density -1
+          mass 0.008336
+          centerOfMass [-0.030623 0.000709 0.055197]
+          inertiaMatrix [
+            1.018665e-06 5.100396e-07 1.282707e-06
+            -5.884476e-08 7.838572e-08 -7.126643e-09
+          ]
+        }
+      }
+
+      # Continue the rest of robot solids/joints here…
+    ]
+    name IS name
+    boundingObject DEF base_link_collision Mesh {
+      url "fetch_description/meshes/base_link_collision.STL"
+    }
+    physics Physics {
+      density -1
+      mass 70.1294
+      centerOfMass [-0.0036 0 0.0014]
+      inertiaMatrix [
+        1.225 1.2853 0.987
+        0.0099 0.0062 -0.0034
+      ]
+    }
+  }
+}
