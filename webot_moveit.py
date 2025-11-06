@@ -1,135 +1,192 @@
-import rclpy
-from rclpy.node import Node
-from sensor_msgs.msg import JointState
-from webots_ros2_driver.webots_driver import WebotsDriver
+from controller import Robot, Motor, PositionSensor
+import time
 
-
-# IMPORTANT: This script runs inside the Webots simulation as the robot's controller.
-# It uses the webots_ros2_driver and requires ROS 2 to be sourced externally.
-
-class FetchWebotsDriver(Node):
-    """
-    Acts as the ROS 2 hardware interface for the Fetch robot in Webots.
-    It receives joint position commands (from MoveIt/ROS Control) and applies them
-    to the Webots motors, while continuously publishing the current joint states.
-    """
-
+class FetchController:
     def __init__(self):
-        super().__init__('fetch_webots_driver')
-
-        # 1. Initialize Webots Robot
-        self.robot = WebotsDriver()
+        # Initialize Webots robot
+        self.robot = Robot()
         self.timestep = int(self.robot.getBasicTimeStep())
-        self.get_logger().info(f"Fetch Webots ROS Driver initialized. Time step: {self.timestep}ms")
+        print(f"Fetch Controller initialized. Time step: {self.timestep} ms")
 
-        # 2. Define controlled joints (Including wheels and torso from your .proto)
+        # Define joints and their max velocities
         self.joint_info = {
-            # Arm Joints (Rotational Motors)
-            'shoulder_pan_joint': 5.0,
-            'shoulder_lift_joint': 5.0,
-            'upperarm_roll_joint': 5.0,
-            'elbow_flex_joint': 5.0,
-            'forearm_roll_joint': 5.0,
-            'wrist_flex_joint': 5.0,
-            'wrist_roll_joint': 5.0,
-            # Gripper Joints (Linear Motors - Position in meters)
-            'l_gripper_finger_joint': 0.5,  # High velocity for fast opening
-            'r_gripper_finger_joint': 0.5,
-            # Torso Lift Joint (Linear Motor)
-            'torso_lift_joint': 0.2,  # Position in meters, slower velocity
+            'shoulder_pan_joint': 1.25,
+            'shoulder_lift_joint': 1.45,
+            'upperarm_roll_joint': 1.57,
+            'elbow_flex_joint': 1.52,
+            'forearm_roll_joint': 1.57,
+            'wrist_flex_joint': 2.26,
+            'wrist_roll_joint': 2.26,
+            'l_gripper_finger_joint': 0.04,
+            'r_gripper_finger_joint': 0.04,
+            'torso_lift_joint': 0.2,
+            'l_wheel_joint': 10.0,
+            'r_wheel_joint': 10.0
         }
 
-        # 3. Initialize Motors and Position Sensors
+        # Initialize motors and sensors
         self.motors = {}
-        self.position_sensors = {}
-        self.all_joint_names = list(self.joint_info.keys())
-
-        for name in self.all_joint_names:
-            # Get Motor
-            motor = self.robot.getMotor(name)
+        self.sensors = {}
+        for name in self.joint_info:
+            motor = self.robot.getDevice(name)
             if motor:
-                motor.setPosition(0.0)
+                # Wheels -> velocity control; others -> position control
+                if 'wheel' in name:
+                    motor.setPosition(float('inf'))  # velocity control
+                else:
+                    motor.setPosition(0.0)  # position control
                 motor.setVelocity(0.0)
                 self.motors[name] = motor
-            else:
-                self.get_logger().warn(f"Motor '{name}' not found. Check .proto file.")
 
-            # Get Position Sensor
-            sensor = self.robot.getPositionSensor(f"{name}_sensor")
+            # Try to enable sensors if they exist
+            sensor = self.robot.getDevice(f"{name}_sensor")
             if sensor:
                 sensor.enable(self.timestep)
-                self.position_sensors[name] = sensor
-            else:
-                self.get_logger().warn(f"Position Sensor '{name}_sensor' not found.")
+                self.sensors[name] = sensor
 
-        # 4. State Management and ROS I/O
-        self.commanded_positions = {name: 0.0 for name in self.all_joint_names}
+        # Commanded positions for all joints
+        self.commanded_positions = {name: 0.0 for name in self.joint_info}
 
-        # Subscriber for joint position commands (from the MoveIt Client)
-        self.subscription = self.create_subscription(
-            JointState,
-            '/fetch/joint_commands',  # Topic where the MoveIt client will send goals
-            self.joint_command_callback,
-            10
-        )
-        self.get_logger().info("Subscribed to /fetch/joint_commands for execution.")
+    def move(self, linear_velocity, angular_velocity):
+        """
+        Moves the Fetch robot using the left and right wheel joints.
+        """
+        wheel_distance = 0.37476  # approximate distance between wheels
+        left_speed = linear_velocity - (angular_velocity * wheel_distance / 2)
+        right_speed = linear_velocity + (angular_velocity * wheel_distance / 2)
 
-        # Publisher for joint states (for RViz visualization and MoveIt planning)
-        self.joint_state_publisher = self.create_publisher(JointState, '/joint_states', 10)
+        if 'l_wheel_joint' in self.motors:
+            self.motors['l_wheel_joint'].setVelocity(left_speed)
+        if 'r_wheel_joint' in self.motors:
+            self.motors['r_wheel_joint'].setVelocity(right_speed)
 
-        # 5. Create Webots loop timer
-        self.timer = self.create_timer(self.timestep / 1000.0, self.webots_step_loop)
+    def go_to(self, joint_positions):
+        for name, pos in joint_positions.items():
+            if name in self.commanded_positions:
+                self.commanded_positions[name] = pos
+                if name in self.motors:
+                    self.motors[name].setPosition(pos)
+                    self.motors[name].setVelocity(self.joint_info.get(name, 5.0))
 
-    def joint_command_callback(self, msg):
-        """Processes incoming JointState messages carrying the goal positions."""
-        # Note: This simple implementation directly uses JointState for position command.
-        for name, position in zip(msg.name, msg.position):
+    def open_gripper(self):
+        self.go_to({'l_gripper_finger_joint': 0.04, 'r_gripper_finger_joint': 0.04})
+
+    def close_gripper(self):
+        self.go_to({'l_gripper_finger_joint': 0.0, 'r_gripper_finger_joint': 0.0})
+
+    def pick_up(self, approach_pose, lower_offset=0.1):
+        """
+        Command the robot to pick up an object.
+        """
+        # Move arm to approach pose
+        for name, pos in approach_pose.items():
             if name in self.motors:
-                self.commanded_positions[name] = position
+                self.motors[name].setPosition(pos)
+                self.motors[name].setVelocity(self.joint_info.get(name, 1.0))
 
-    def publish_joint_states(self):
-        """Reads current sensor values and publishes the JointState message."""
-        js_msg = JointState()
-        js_msg.header.stamp = self.get_clock().now().to_msg()
+        # Open gripper
+        self.motors['l_gripper_finger_joint'].setPosition(0.04)
+        self.motors['l_gripper_finger_joint'].setVelocity(self.joint_info['l_gripper_finger_joint'])
+        self.motors['r_gripper_finger_joint'].setPosition(0.04)
+        self.motors['r_gripper_finger_joint'].setVelocity(self.joint_info['r_gripper_finger_joint'])
 
-        for name in self.all_joint_names:
-            js_msg.name.append(name)
+        # Lower arm for grasp
+        for name, pos in approach_pose.items():
+            if name == 'shoulder_lift_joint':
+                self.motors[name].setPosition(pos + lower_offset)
 
-            # Position sensor reading
-            pos = self.position_sensors[name].getValue() if name in self.position_sensors else 0.0
-            js_msg.position.append(pos)
+        # Close gripper (grasp)
+        self.motors['l_gripper_finger_joint'].setPosition(0.0)
+        self.motors['r_gripper_finger_joint'].setPosition(0.0)
 
-            # Velocity (Placeholder, actual vel would be calculated)
-            js_msg.velocity.append(0.0)
-
-        self.joint_state_publisher.publish(js_msg)
-
-    def webots_step_loop(self):
+    def put_down(self, release_pose, lower_offset=0.1):
         """
-        The main control loop for Webots.
-        1. Drive the motors to the commanded position.
-        2. Publish the current state back to ROS.
+        Command the robot to put down an object.
         """
-        if self.robot.step(self.timestep) != -1:
-            # 1. Apply Commands to Motors
-            for name, motor in self.motors.items():
-                target_pos = self.commanded_positions[name]
-                max_vel = self.joint_info.get(name, 5.0)
+        # Move arm to release pose
+        for name, pos in release_pose.items():
+            if name in self.motors:
+                self.motors[name].setPosition(pos)
+                self.motors[name].setVelocity(self.joint_info.get(name, 1.0))
 
-                motor.setPosition(target_pos)
-                motor.setVelocity(max_vel)
+        # Lower arm for release
+        for name, pos in release_pose.items():
+            if name == 'shoulder_lift_joint':
+                self.motors[name].setPosition(pos + lower_offset)
 
-            # 2. Publish Current State
-            self.publish_joint_states()
+        # Open gripper to release object
+        self.motors['l_gripper_finger_joint'].setPosition(0.04)
+        self.motors['r_gripper_finger_joint'].setPosition(0.04)
+
+    def step(self):
+        return self.robot.step(self.timestep)
+
+    def test_sequence(self):
+        print("=== Starting Test Sequence ===")
+
+        # 1. Move backwards several meters
+        print("Step 1: Moving backwards 3 meters...")
+        total_distance = -0.5
+        step_distance = -0.1
+        steps = int(abs(total_distance / step_distance))
+        for _ in range(steps):
+            self.move(step_distance, 0.0)
+            self.step()
+        self.move(0, 0)
+        print(f"  Moved {total_distance} m backwards")
+
+        # 2. Move arm to initial pose
+        print("Step 2: Moving arm to initial pose...")
+        self.go_to({
+            'shoulder_pan_joint': 0.0,
+            'shoulder_lift_joint': 0.2,
+            'upperarm_roll_joint': 0.0,
+            'elbow_flex_joint': 0.3,
+            'forearm_roll_joint': 0.0,
+            'wrist_flex_joint': 0.0,
+            'wrist_roll_joint': 0.0
+        })
+        self.step()
+        time.sleep(1.0)
+        print("  Arm moved to initial pose")
+
+        # 3. Open gripper
+        print("Step 3: Opening gripper...")
+        self.open_gripper()
+        self.step()
+        time.sleep(1.0)
+        print("  Gripper opened")
+
+        # 4. Close gripper
+        print("Step 4: Closing gripper...")
+        self.close_gripper()
+        self.step()
+        time.sleep(1.0)
+        print("  Gripper closed")
+
+        # 5. Final arm pose
+        print("Step 5: Moving arm to final pose...")
+        self.go_to({
+            'shoulder_pan_joint': 0.5,
+            'shoulder_lift_joint': 0.1,
+            'elbow_flex_joint': 0.5
+        })
+        self.step()
+        time.sleep(1.0)
+        print("  Arm moved to final pose")
+
+        print("=== Test Sequence Complete ===")
 
 
-def main(args=None):
-    rclpy.init(args=args)
-    driver = FetchWebotsDriver()
-    rclpy.spin(driver)
-    driver.destroy_node()
-    rclpy.shutdown()
+def main():
+    controller = FetchController()
+    time.sleep(1.0)
+    controller.test_sequence()
+
+    # Keep robot running
+    while controller.step() != -1:
+        pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
