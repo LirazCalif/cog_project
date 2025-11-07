@@ -48,19 +48,26 @@ class FetchController:
         self.commanded_positions = {name: 0.0 for name in self.joint_info}
 
     def move(self, linear_velocity, angular_velocity):
-        """
-        Moves the Fetch robot using the left and right wheel joints.
-        """
-        wheel_distance = 0.37476  # approximate distance between wheels
-        left_speed = linear_velocity - (angular_velocity * wheel_distance / 2)
-        right_speed = linear_velocity + (angular_velocity * wheel_distance / 2)
+        wheel_distance = 0.37476
+        wheel_radius = 0.065
 
-        if 'l_wheel_joint' in self.motors:
-            self.motors['l_wheel_joint'].setVelocity(left_speed)
-        if 'r_wheel_joint' in self.motors:
-            self.motors['r_wheel_joint'].setVelocity(right_speed)
+        left_speed = (linear_velocity - (angular_velocity * wheel_distance / 2)) / wheel_radius
+        right_speed = (linear_velocity + (angular_velocity * wheel_distance / 2)) / wheel_radius
+
+        # Clip to max motor velocity
+        left_speed = max(-10, min(10, left_speed))
+        right_speed = max(-10, min(10, right_speed))
+
+        print(f"Wheel speeds -> Left: {left_speed:.2f}, Right: {right_speed:.2f}")
+
+        self.motors['l_wheel_joint'].setVelocity(left_speed)
+        self.motors['r_wheel_joint'].setVelocity(right_speed)
 
     def go_to(self, joint_positions):
+
+        """
+        Moves the Fetch robot's arm.
+        """
         for name, pos in joint_positions.items():
             if name in self.commanded_positions:
                 self.commanded_positions[name] = pos
@@ -121,71 +128,100 @@ class FetchController:
     def step(self):
         return self.robot.step(self.timestep)
 
-    def test_sequence(self):
-        print("=== Starting Test Sequence ===")
+    def test_pick_and_place(self):
+        print("=== Starting Pick and Place Test ===")
 
-        # 1. Move backwards several meters
-        print("Step 1: Moving backwards 3 meters...")
-        total_distance = -0.5
-        step_distance = -0.1
-        steps = int(abs(total_distance / step_distance))
-        for _ in range(steps):
-            self.move(step_distance, 0.0)
+        # --- Step 1: Move near the bottle ---
+        print("Step 1: Approaching bottle...")
+        # Move forward in small increments for control
+        for _ in range(200):  # roughly 2.5 meters
+            self.move(0.2, 0.0)
             self.step()
         self.move(0, 0)
-        print(f"  Moved {total_distance} m backwards")
+        print("  Arrived near bottle")
 
-        # 2. Move arm to initial pose
-        print("Step 2: Moving arm to initial pose...")
+        # --- Step 2: Turn slightly left towards the bottle ---
+        print("Step 2: Turning towards bottle...")
+        for _ in range(10):  # rotate left
+            self.move(0.0, 0.2)
+            self.step()
+        self.move(0, 0)
+        print("  Facing bottle")
+
+        # --- Step 3: Prepare arm to pick up bottle ---
+        print("Step 3: Moving arm to approach pose...")
+        approach_pose = {
+            'shoulder_pan_joint': 0.3,  # Turn arm slightly left
+            'shoulder_lift_joint': 0.5,  # Lift shoulder
+            'upperarm_roll_joint': 0.0,
+            'elbow_flex_joint': 1.0,  # Bend elbow
+            'forearm_roll_joint': 0.0,
+            'wrist_flex_joint': -0.5,  # Lower wrist towards bottle
+            'wrist_roll_joint': 0.0
+        }
+        self.pick_up(approach_pose, lower_offset=0.15)
+        for _ in range(30):
+            self.step()
+        time.sleep(1.0)
+        print("  Bottle picked up")
+
+        # --- Step 4: Lift the arm slightly ---
+        print("Step 4: Lifting arm with bottle...")
+        lift_pose = approach_pose.copy()
+        lift_pose['shoulder_lift_joint'] = 0.2  # lift up
+        self.go_to(lift_pose)
+        for _ in range(30):
+            self.step()
+        time.sleep(1.0)
+        print("  Arm lifted")
+
+        # --- Step 5: Move to new location to put bottle down ---
+        print("Step 5: Moving to placement location...")
+        for _ in range(30):  # move forward 1.5m
+            self.move(0.1, 0.0)
+            self.step()
+        self.move(0, 0)
+        print("  Reached placement area")
+
+        # --- Step 6: Place down bottle ---
+        print("Step 6: Putting bottle down...")
+        release_pose = {
+            'shoulder_pan_joint': 0.3,
+            'shoulder_lift_joint': 0.4,
+            'upperarm_roll_joint': 0.0,
+            'elbow_flex_joint': 1.2,
+            'forearm_roll_joint': 0.0,
+            'wrist_flex_joint': -0.6,
+            'wrist_roll_joint': 0.0
+        }
+        self.put_down(release_pose, lower_offset=0.15)
+        for _ in range(30):
+            self.step()
+        time.sleep(1.0)
+        print("  Bottle placed down")
+
+        # --- Step 7: Return to neutral pose ---
+        print("Step 7: Returning arm to rest position...")
         self.go_to({
             'shoulder_pan_joint': 0.0,
             'shoulder_lift_joint': 0.2,
-            'upperarm_roll_joint': 0.0,
             'elbow_flex_joint': 0.3,
-            'forearm_roll_joint': 0.0,
-            'wrist_flex_joint': 0.0,
-            'wrist_roll_joint': 0.0
+            'wrist_flex_joint': 0.0
         })
-        self.step()
-        time.sleep(1.0)
-        print("  Arm moved to initial pose")
-
-        # 3. Open gripper
-        print("Step 3: Opening gripper...")
-        self.open_gripper()
-        self.step()
-        time.sleep(1.0)
-        print("  Gripper opened")
-
-        # 4. Close gripper
-        print("Step 4: Closing gripper...")
-        self.close_gripper()
-        self.step()
-        time.sleep(1.0)
-        print("  Gripper closed")
-
-        # 5. Final arm pose
-        print("Step 5: Moving arm to final pose...")
-        self.go_to({
-            'shoulder_pan_joint': 0.5,
-            'shoulder_lift_joint': 0.1,
-            'elbow_flex_joint': 0.5
-        })
-        self.step()
-        time.sleep(1.0)
-        print("  Arm moved to final pose")
-
-        print("=== Test Sequence Complete ===")
+        for _ in range(30):
+            self.step()
+        print("  Arm returned to rest")
+        print("=== Pick and Place Test Complete ===")
 
 
 def main():
     controller = FetchController()
     time.sleep(1.0)
-    controller.test_sequence()
+    controller.test_pick_and_place()
 
-    # Keep robot running
     while controller.step() != -1:
         pass
+
 
 
 if __name__ == "__main__":
