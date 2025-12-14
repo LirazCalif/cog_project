@@ -723,7 +723,7 @@ PROTO fetch_webots [
             geometry DEF laser_link Mesh {
               url "fetch_description/meshes/laser_link.STL"
             }
-          }	
+          }
     	  Transform {
       	    translation 0 0 0.1
             children [
@@ -759,7 +759,7 @@ PROTO fetch_webots [
               RangeFinder {
 		 name "depth_camera"
     		width 1280
-    		height 720		
+    		height 720
     		fieldOfView 1.047
 		maxRange 10
 		}
