@@ -57,6 +57,17 @@ class FetchController:
         self.wheel_radius = 0.065
         self.wheel_distance = 0.37476
 
+        self.tables = [
+            {  # Table A
+                "xmin": -7.56, "xmax": -6.56,
+                "ymin": -7.54, "ymax": -5.04
+            },
+            {  # Table B
+                "xmin": -5.06, "xmax": -4.06,
+                "ymin": -7.53, "ymax": -3.53
+            }
+        ]
+
     # ---------------- Base motion ----------------
     def move(self, linear_velocity, angular_velocity):
         """
@@ -401,6 +412,98 @@ class FetchController:
         self.go_to_location(x, y, approach_pose)
         print(f"Arrived at {table_id}")
 
+
+    def point_in_rect(self, x, y, r):
+        return r["xmin"] <= x <= r["xmax"] and r["ymin"] <= y <= r["ymax"]
+
+    def segment_intersects_rect(self, x1, y1, x2, y2, r):
+        # Sample-based (safe enough for slow robots)
+        steps = 20
+        for i in range(steps + 1):
+            t = i / steps
+            xs = x1 + t * (x2 - x1)
+            ys = y1 + t * (y2 - y1)
+            if self.point_in_rect(xs, ys, r):
+                return True
+        return False
+
+    def path_blocked(self, x1, y1, x2, y2):
+        for table in self.tables:
+            if self.segment_intersects_rect(x1, y1, x2, y2, table):
+                return True
+        return False
+
+    def choose_safe_waypoint(self, tx, ty):
+        SAFE_WAYPOINTS = [
+            (-8.2, -8.2),
+            (-8.2, -4.5),
+            (-3.8, -8.2),
+        ]
+
+        candidates = []
+        for wx, wy in SAFE_WAYPOINTS:
+            if not self.path_blocked(self.x, self.y, wx, wy):
+                dist = math.hypot(wx - self.x, wy - self.y)
+                candidates.append((dist, wx, wy))
+
+        if not candidates:
+            raise RuntimeError("No safe waypoint found")
+
+        _, wx, wy = min(candidates)
+        return wx, wy
+
+    def go_to_location_safe(self, tx, ty, pose_theta=None):
+        if self.path_blocked(self.x, self.y, tx, ty):
+            print("⚠ Path blocked, routing around table")
+            wx, wy = self.choose_safe_waypoint(tx, ty)
+            self.go_to_location(wx, wy)
+
+        self.go_to_location(tx, ty, pose_theta)
+
+    def compute_pregrasp(self, obj_position, approach_vector=None, margin=0.05):
+        """
+        Compute the optimal robot base location to reach the object.
+
+        obj_position: (x, y, z)
+        approach_vector: optional (dx, dy) unit vector for approach. If None, compute from current robot position
+        margin: safety margin in meters
+        """
+        max_arm_reach = 0.9  # adjust based on your arm
+
+        x_obj, y_obj, z_obj = obj_position
+
+        if approach_vector is None:
+            dx = x_obj - self.x
+            dy = y_obj - self.y
+            dist = math.hypot(dx, dy)
+            approach_vector = (dx / dist, dy / dist)
+
+        # Pregrasp distance
+        d_pre = max_arm_reach - margin
+
+        # Pregrasp position
+        x_pre = x_obj - approach_vector[0] * d_pre
+        y_pre = y_obj - approach_vector[1] * d_pre
+
+        return x_pre, y_pre
+
+    def go_to_pregrasp(self, obj_x, obj_y, distance=0.6):
+        """
+        Drive the base to a position 'distance' meters away from the object,
+        facing it, so the arm can reach.
+        """
+
+        dx = obj_x - self.x
+        dy = obj_y - self.y
+        theta = math.atan2(dy, dx)
+
+        target_x = obj_x - distance * math.cos(theta)
+        target_y = obj_y - distance * math.sin(theta)
+
+        print(f"Pregrasp base pose: ({target_x:.2f}, {target_y:.2f})")
+
+        self.go_to_location_safe(target_x, target_y)
+
     # ---------------- Helper ----------------
     def step(self):
         """
@@ -412,109 +515,89 @@ class FetchController:
         """
         return self.robot.step(self.timestep)
 
-    def test_all(self):
+    def test_pickup_bottle(controller):
         """
-        Unified test function to exercise all major robot capabilities:
-        - Base motion
-        - Arm motion
-        - Gripper open/close
-        - Wrist twisting
-        - Pick & place
-        - Drawer & closet interaction
+        Single test: move to a bottle, pick it up, move arm slightly, and put it back.
+        Takes into account arm reach and table collisions.
         """
-        print("=== Starting Full Robot Test ===")
 
-        # ---------------- Base & Arm Motion ----------------
-        print("Step 1: Moving to first test location (drawer)...")
-        drawer_pose = {
-            'shoulder_pan_joint': 0.4,
-            'shoulder_lift_joint': 0.5,
-            'elbow_flex_joint': 1.2,
-            'wrist_flex_joint': -0.4,
-            'wrist_roll_joint': 0.0
-        }
-        self.go_to_location(1.5, 2.0, drawer_pose)
+        # --- Bottle info ---
+        bottle_pos = (-9.31193, -9.17956, 0.477982)  # x, y, z in meters
 
-        print("Step 2: Interacting with drawer")
-        self.open_drawer(drawer_pose)
-        self.close_drawer(drawer_pose)
+        # --- Tables info (to avoid collisions) ---
+        tables = [
+            {"position": (-7.06, -6.29, 0), "size": (1, 2.5, 0.74)},
+            {"position": (-4.56, -5.53, 0), "size": (1, 4, 0.74)}
+        ]
 
-        # ---------------- Closet Interaction ----------------
-        print("Step 3: Moving to closet location...")
-        closet_pose = {
-            'shoulder_pan_joint': -0.3,
-            'shoulder_lift_joint': 0.4,
-            'elbow_flex_joint': 1.0,
-            'wrist_flex_joint': -0.5,
-            'wrist_roll_joint': 0.0
-        }
-        self.go_to_location(2.0, 3.0, closet_pose)
+        # --- Step 1: Compute pregrasp position ---
+        x_pre, y_pre = controller.compute_pregrasp(bottle_pos, margin=0.05)
 
-        print("Step 4: Interacting with closet")
-        self.open_closet(closet_pose)
-        self.close_closet(closet_pose)
+        # --- Step 2: Simple collision check ---
+        # If pregrasp is inside a table, shift back along approach vector
+        def is_inside_table(x, y, table):
+            tx, ty, _ = table["position"]
+            sx, sy, _ = table["size"]
+            return (tx - sx / 2 <= x <= tx + sx / 2) and (ty - sy / 2 <= y <= ty + sy / 2)
 
-        # ---------------- Pick & Place ----------------
-        print("Step 5: Testing pick and place...")
+        # Compute approach vector
+        dx = bottle_pos[0] - controller.x
+        dy = bottle_pos[1] - controller.y
+        dist = math.hypot(dx, dy)
+        approach_vector = (dx / dist, dy / dist)
+
+        shift_step = 0.05
+        max_attempts = 20
+        attempts = 0
+        while any(is_inside_table(x_pre, y_pre, t) for t in tables) and attempts < max_attempts:
+            x_pre -= approach_vector[0] * shift_step
+            y_pre -= approach_vector[1] * shift_step
+            attempts += 1
+
+        # --- Step 3: Define approach pose for arm ---
         approach_pose = {
-            'shoulder_pan_joint': 0.3,
-            'shoulder_lift_joint': 0.5,
-            'upperarm_roll_joint': 0.0,
-            'elbow_flex_joint': 1.0,
-            'forearm_roll_joint': 0.0,
-            'wrist_flex_joint': -0.5,
-            'wrist_roll_joint': 0.0
-        }
-        release_pose = {
-            'shoulder_pan_joint': 0.3,
-            'shoulder_lift_joint': 0.4,
-            'upperarm_roll_joint': 0.0,
-            'elbow_flex_joint': 1.2,
-            'forearm_roll_joint': 0.0,
-            'wrist_flex_joint': -0.6,
-            'wrist_roll_joint': 0.0
-        }
-
-        # Pick up
-        self.pick_up(approach_pose, lower_offset=0.15)
-        for _ in range(30): self.step()
-        print("  Picked up object")
-
-        # Twist wrist
-        for direction in ["clockwise", "clockwise", "counterclockwise", "counterclockwise"]:
-            self.twist_wrist(direction)
-            time.sleep(0.5)
-        print("  Wrist twist test complete")
-
-        # Place down
-        self.put_down(release_pose, lower_offset=0.15)
-        for _ in range(30): self.step()
-        print("  Placed object down")
-
-        # ---------------- Return Arm to Rest ----------------
-        print("Step 6: Returning arm to neutral pose...")
-        rest_pose = {
             'shoulder_pan_joint': 0.0,
-            'shoulder_lift_joint': 0.2,
-            'elbow_flex_joint': 0.3,
-            'wrist_flex_joint': 0.0
+            'shoulder_lift_joint': 0.3,
+            'upperarm_roll_joint': 0.0,
+            'elbow_flex_joint': 0.5,
+            'forearm_roll_joint': 0.0,
+            'wrist_flex_joint': 0.0,
+            'wrist_roll_joint': 0.0
         }
-        self.go_to(rest_pose)
-        for _ in range(30): self.step()
 
-        print("=== Full Robot Test Complete ===")
+        print(f"Moving to pregrasp position ({x_pre:.2f}, {y_pre:.2f})")
+        controller.go_to_location(x_pre, y_pre, approach_pose)
+
+        # --- Step 4: Pick up bottle ---
+        print("Picking up the bottle...")
+        controller.pick_up(approach_pose, lower_offset=0.1)
+        for _ in range(20):
+            controller.step()
+
+        # --- Step 5: Move arm slightly ---
+        print("Moving arm slightly...")
+        moved_pose = approach_pose.copy()
+        moved_pose['elbow_flex_joint'] += 0.1  # simple small motion
+        moved_pose['shoulder_lift_joint'] += 0.05
+        controller.go_to(moved_pose)
+        for _ in range(20):
+            controller.step()
+
+        # --- Step 6: Put bottle back ---
+        print("Putting bottle back...")
+        controller.put_down(approach_pose, lower_offset=0.1)
+        for _ in range(20):
+            controller.step()
+
+        print("Test complete: bottle picked, arm moved, bottle replaced.")
 
 
 def main():
     controller = FetchController()
     time.sleep(1.0)
 
-    controller.go_to_table("table1")
-    controller.go_to_table("table2")
-
-
     # Run unified test
-    controller.test_all()
+    controller.test_pickup_bottle()
 
     while controller.step() != -1:
         pass
