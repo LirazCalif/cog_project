@@ -73,9 +73,7 @@ PROTO MedicineBottle [
       Shape {
         appearance PBRAppearance {
           baseColorMap ImageTexture {
-            url [
-              "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/hospital/protos/textures/medicine_label.jpg"
-            ]
+            url "../protos/label_med_a.png"
           }
           roughness 1
           metalness 0
@@ -149,6 +147,7 @@ PROTO MedicineBottle [
             }
           ]
         }
+
       ]
     }
     physics IS physics
