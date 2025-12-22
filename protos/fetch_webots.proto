@@ -780,6 +780,22 @@ PROTO fetch_webots [
               }
       	   ]
     	 }
+
+    	 Transform {
+            translation 0.15 0 0.05
+            rotation 0 1 0 0
+            children [
+            Camera {
+                name "hand_camera"
+                width 640
+                height 480
+                fieldOfView 1.047
+                near 0.01
+                far 100
+                    }
+                ]
+            }
+
         ]
         name "laser_link"
         boundingObject USE laser_link
