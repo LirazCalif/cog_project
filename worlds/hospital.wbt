@@ -2,158 +2,701 @@
 
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/apartment_structure/protos/Wall.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/kitchen/fridge/protos/Fridge.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/hospital/protos/HospitalBed.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/cabinet/protos/Cabinet.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/tables/protos/Table.proto"
-EXTERNPROTO "../protos/fetch_webots.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/apartment_structure/protos/Door.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/Floor.proto"
 EXTERNPROTO "../protos/MedicineBottle.proto"
 EXTERNPROTO "../protos/MedicineBottleB.proto"
 EXTERNPROTO "../protos/MedicineBottleC.proto"
+EXTERNPROTO "../protos/fetch_webots.proto"
 
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.14846863593216347 -0.019715361163278218 0.9887205715866562 3.491606294708126
-  position -5.61914501354156 -5.548943668763766 1.5879326517023982
+  orientation 0.35928370910931107 -0.0424176324049729 -0.9322638901243641 3.3244222966721417
+  position -1.9013638276652411 -6.9318892279300375 5.6199738492680655
 }
 Floor {
   size 20 20
 }
+DEF medicineB Solid {
+  translation -7.34227 -7.2991 0.789976
+  rotation 0 1 0 4.38702e-06
+  children [
+    DEF med Shape {
+      geometry Cylinder {
+        height 0.1
+        radius 0.02
+      }
+    }
+  ]
+  name "solid(2)"
+  boundingObject USE med
+  physics Physics {
+  }
+}
+DEF gripper Solid {
+  translation -7.35 -6.76 0.76
+}
+Solid {
+  translation 10 0 0
+  rotation 0 1 0 4.692820414042842e-06
+  children [
+    Solid {
+      translation 0 0 1.25
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/textures/roughcast/roughcast_normal.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 2.4 1
+            }
+          }
+          geometry Box {
+            size 0.2 20 2.5
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.2 20 2.5
+      }
+    }
+  ]
+  name "wall(1)"
+  model "wall"
+}
+Solid {
+  translation -10 0 0
+  rotation 0 1 0 4.692820414042842e-06
+  children [
+    Solid {
+      translation 0 0 1.25
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/textures/roughcast/roughcast_normal.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 2.4 1
+            }
+          }
+          geometry Box {
+            size 0.2 20 2.5
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.2 20 2.5
+      }
+    }
+  ]
+  name "wall(2)"
+  model "wall"
+}
+Solid {
+  translation 0 10 0
+  rotation 0 0 1 1.5708003061004252
+  children [
+    Solid {
+      translation 0 0 1.25
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/textures/roughcast/roughcast_normal.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 2.4 1
+            }
+          }
+          geometry Box {
+            size 0.2 20 2.5
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.2 20 2.5
+      }
+    }
+  ]
+  name "wall(3)"
+  model "wall"
+}
+Solid {
+  translation 0 -10 0
+  rotation 0 0 1 1.5707996938995747
+  children [
+    Solid {
+      translation 0 0 1.25
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/textures/roughcast/roughcast_normal.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 2.4 1
+            }
+          }
+          geometry Box {
+            size 0.2 20 2.5
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.2 20 2.5
+      }
+    }
+  ]
+  name "wall(4)"
+  model "wall"
+}
+Solid {
+  translation 5.75 7.5 0
+  children [
+    Solid {
+      translation 0 0 1.2
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/textures/roughcast/roughcast_normal.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 2.4 1
+            }
+          }
+          geometry Box {
+            size 0.2 5 2.4
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.2 5 2.4
+      }
+    }
+  ]
+  name "wall(6)"
+  model "wall"
+}
+Solid {
+  translation 1.8 7.5 0
+  children [
+    Solid {
+      translation 0 0 1.2
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/textures/roughcast/roughcast_normal.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 2.4 1
+            }
+          }
+          geometry Box {
+            size 0.2 5 2.4
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.2 5 2.4
+      }
+    }
+  ]
+  name "wall(10)"
+  model "wall"
+}
+Solid {
+  translation -6.92 7.5 0
+  children [
+    Solid {
+      translation 0 0 1.2
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/textures/roughcast/roughcast_normal.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 2.4 1
+            }
+          }
+          geometry Box {
+            size 0.2 5 2.4
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.2 5 2.4
+      }
+    }
+  ]
+  name "wall(7)"
+  model "wall"
+}
+Solid {
+  translation -2.95 7.5 0
+  children [
+    Solid {
+      translation 0 0 1.2
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/textures/roughcast/roughcast_normal.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 2.4 1
+            }
+          }
+          geometry Box {
+            size 0.2 5 2.4
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.2 5 2.4
+      }
+    }
+  ]
+  name "wall(17)"
+  model "wall"
+}
+Solid {
+  translation -2.35 -7.4 0
+  children [
+    Solid {
+      translation 0 0 1.2
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/textures/roughcast/roughcast_normal.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 2.4 1
+            }
+          }
+          geometry Box {
+            size 0.2 5 2.4
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.2 5 2.4
+      }
+    }
+  ]
+  name "wall(5)"
+  model "wall"
+}
+Solid {
+  translation 8.66 5 0
+  rotation 0 0 1 1.5708
+  children [
+    Solid {
+      translation 0 0 1.2
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/textures/roughcast/roughcast_normal.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 2.4 1
+            }
+          }
+          geometry Box {
+            size 0.2 2.5 2.4
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.2 2.5 2.4
+      }
+    }
+  ]
+  name "wall(13)"
+  model "wall"
+}
+Solid {
+  translation 8.66 -5 0
+  rotation 0 0 1 1.5708
+  children [
+    Solid {
+      translation 0 0 1.2
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/textures/roughcast/roughcast_normal.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 2.4 1
+            }
+          }
+          geometry Box {
+            size 0.2 2.5 2.4
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.2 2.5 2.4
+      }
+    }
+  ]
+  name "wall(8)"
+  model "wall"
+}
+Solid {
+  translation 4.55 5 0
+  rotation 0 0 1 1.5708
+  children [
+    Solid {
+      translation 0 0 1.2
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/textures/roughcast/roughcast_normal.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 2.4 1
+            }
+          }
+          geometry Box {
+            size 0.2 2.5 2.4
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.2 2.5 2.4
+      }
+    }
+  ]
+  name "wall(16)"
+  model "wall"
+}
+Solid {
+  translation 5.71 -7.4 0
+  children [
+    Solid {
+      translation 0 0 1.2
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/textures/roughcast/roughcast_normal.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 2.4 1
+            }
+          }
+          geometry Box {
+            size 0.2 5 2.4
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.2 5 2.4
+      }
+    }
+  ]
+  name "wall(14)"
+  model "wall"
+}
+Solid {
+  translation 1.8 -7.4 0
+  children [
+    Solid {
+      translation 0 0 1.2
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/textures/roughcast/roughcast_normal.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 2.4 1
+            }
+          }
+          geometry Box {
+            size 0.2 5 2.4
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.2 5 2.4
+      }
+    }
+  ]
+  name "wall(15)"
+  model "wall"
+}
+Solid {
+  translation 4.55 -5.01 0
+  rotation 0 0 1 1.5708
+  children [
+    Solid {
+      translation 0 0 1.2
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/textures/roughcast/roughcast_normal.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 2.4 1
+            }
+          }
+          geometry Box {
+            size 0.2 2.5 2.4
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.2 2.5 2.4
+      }
+    }
+  ]
+  name "wall(9)"
+  model "wall"
+}
+Solid {
+  translation -4.14 5 0
+  rotation 0 0 1 1.5708
+  children [
+    Solid {
+      translation 0 0 1.2
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/textures/roughcast/roughcast_normal.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 2.4 1
+            }
+          }
+          geometry Box {
+            size 0.2 2.5 2.4
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.2 2.5 2.4
+      }
+    }
+  ]
+  name "wall(18)"
+  model "wall"
+}
+Solid {
+  translation 0.65 -4.8 0
+  rotation 0 0 1 1.5708
+  children [
+    Solid {
+      translation 0 0 1.2
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/textures/roughcast/roughcast_normal.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 2.4 1
+            }
+          }
+          geometry Box {
+            size 0.2 2.5 2.4
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.2 2.5 2.4
+      }
+    }
+  ]
+  name "wall(11)"
+  model "wall"
+}
+Solid {
+  translation -7.58 5 0
+  rotation 0 0 1 1.5708
+  children [
+    Solid {
+      translation 0 0 1.2
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/textures/roughcast/roughcast_normal.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 2.4 1
+            }
+          }
+          geometry Box {
+            size 0.2 1.5 2.4
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.2 1.5 2.4
+      }
+    }
+  ]
+  name "wall(19)"
+  model "wall"
+}
+DEF wall1 Solid {
+  translation -2.40003 -0.57 0
+  rotation 0 0 1 1.5707996938995747
+  children [
+    Solid {
+      translation 0 0 1.25
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/textures/roughcast/roughcast_normal.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              scale 2.4 1
+            }
+          }
+          geometry Box {
+            size 0.2 15 2.5
+          }
+        }
+      ]
+      boundingObject Box {
+        size 0.2 15 2.5
+      }
+    }
+  ]
+  name "wall(12)"
+  model "wall"
+}
+DEF flacon MedicineBottleB {
+  translation -6.85292 -6.09919 0.777834
+  rotation -0.00042446193667422755 -0.0031809095254378885 0.9999948508100706 0.236435
+  name "medicine bottle b(9)"
+  physics Physics {
+    density 1
+    mass 0.01
+    centerOfMass [
+      0 0 0
+    ]
+    inertiaMatrix [
+      0.0001 0 0
+      0 0.0001 0
+    ]
+  }
+}
 Group {
   children [
     Door {
-      hidden translation_5 0.0012839007513487655 8.896201055341724e-05 6.661338147750939e-16
-      hidden rotation_5 0 0 -1 0.0005976298088763532
       translation -8.83 5 -0.04
       rotation 0 0 1 -1.5707953071795862
-      position -0.0048832513092655115
+      position -0.005028623683077248
     }
   ]
 }
 Group {
-  children [
-    Wall {
-      translation -2.40003 -0.57 0
-      rotation 0 0 1 1.5707996938995747
-      name "wall(19)"
-      size 0.2 15 2.5
-    }
-    Wall {
-      translation -9.63 5 0
-      rotation 0 0 1 1.5708
-      name "wall(12)"
-      size 0.2 0.6 2.4
-    }
-    Wall {
-      translation -7.58 5 0
-      rotation 0 0 1 1.5708
-      name "wall(11)"
-      size 0.2 1.5 2.4
-    }
-    Wall {
-      translation 0.65 -4.8 0
-      rotation 0 0 1 1.5708
-      name "wall(18)"
-      size 0.2 2.5 2.4
-    }
-    Wall {
-      translation -4.14 5 0
-      rotation 0 0 1 1.5708
-      name "wall(9)"
-      size 0.2 2.5 2.4
-    }
-    Wall {
-      translation 4.55 -5.01 0
-      rotation 0 0 1 1.5708
-      name "wall(15)"
-      size 0.2 2.5 2.4
-    }
-    Wall {
-      translation 4.55 5 0
-      rotation 0 0 1 1.5708
-      name "wall(8)"
-      size 0.2 2.5 2.4
-    }
-    Wall {
-      translation 8.66 -5 0
-      rotation 0 0 1 1.5708
-      name "wall(13)"
-      size 0.2 2.5 2.4
-    }
-    Wall {
-      translation 8.66 5 0
-      rotation 0 0 1 1.5708
-      name "wall(5)"
-      size 0.2 2.5 2.4
-    }
-    Wall {
-      translation -2.35 -7.4 0
-      name "wall(17)"
-      size 0.2 5 2.4
-    }
-    Wall {
-      translation -2.95 7.5 0
-      name "wall(7)"
-      size 0.2 5 2.4
-    }
-    Wall {
-      translation -6.92 7.5 0
-      name "wall(10)"
-      size 0.2 5 2.4
-    }
-    Wall {
-      translation 1.8 -7.4 0
-      name "wall(16)"
-      size 0.2 5 2.4
-    }
-    Wall {
-      translation 1.8 7.5 0
-      name "wall(6)"
-      size 0.2 5 2.4
-    }
-    Wall {
-      translation 5.75 -7.43 0
-      name "wall(14)"
-      size 0.2 5 2.4
-    }
-    Wall {
-      translation 5.75 7.5 0
-      name "wall(4)"
-      size 0.2 5 2.4
-    }
-  ]
 }
 Group {
   children [
-    DEF flacon MedicineBottleB {
-      translation -9.31193 -9.17956 0.477982
-      rotation -5.2373148145915106e-05 -0.029808865942436313 -0.9995556156454123 0.025379700000007027
-      physics Physics {
-        mass 0.2
-        centerOfMass [
-          0 0 0
-        ]
-        inertiaMatrix [
-          0.0001 0 0
-          0 0.0001 0
-        ]
-      }
-    }
-    Wall {
-      translation 0 -10 0
-      rotation 0 0 1 1.5707996938995747
-      name "wall(3)"
-      size 0.2 20 2.5
-    }
     DEF flacon MedicineBottle {
-      translation -9.3 -9.1 0.47796075999999904
+      translation -7.08097 -6.12182 0.777782
+      rotation -3.3579927307597985e-11 -9.176483908990936e-11 1 3.4668200000173084e-06
       name "medicine bottle(26)"
       physics Physics {
-        mass 0.2
+        density 1
+        mass 0.01
         centerOfMass [
           0 0 0
         ]
@@ -163,23 +706,6 @@ Group {
         ]
       }
     }
-    Wall {
-      translation 0 10 0
-      rotation 0 0 1 1.5708003061004252
-      name "wall(2)"
-      size 0.2 20 2.5
-    }
-    Wall {
-      translation -10 0 0
-      rotation 0 1 0 4.692820414042842e-06
-      name "wall(1)"
-      size 0.2 20 2.5
-    }
-    Wall {
-      translation 10 0 0
-      rotation 0 1 0 4.692820414042842e-06
-      size 0.2 20 2.5
-    }
   ]
 }
 TexturedBackground {
@@ -187,10 +713,6 @@ TexturedBackground {
 TexturedBackgroundLight {
 }
 Fridge {
-  hidden position_0_0 -0.0001756219335922511
-  hidden position_0_1 0.00017562201157083062
-  hidden rotation_1 0 0 -0.9999999999999999 0.000175621932668918
-  hidden rotation_2 0 0 1 0.00017562201105754657
   translation 1.17999 9.5 0
   rotation 0 0 1 -1.5707953071795862
 }
@@ -224,58 +746,9 @@ Group {
     }
   ]
 }
-fetch_webots {
-  hidden position_0_0 0.018496286455461784
-  hidden position_0_1 -0.019564223192962266
-  hidden position_0_2 -0.00028600692913826573
-  hidden rotation_1 0 1 0 0.01849628645546077
-  hidden rotation_2 0 -1 0 0.019564223192968425
-  hidden translation_3 -0.086875 0 0.3771439930708617
-  hidden position_3_0 1.4718074790098651e-06
-  hidden position_3_1 0.49974945540689053
-  hidden position_3_2 7.625831050699018e-06
-  hidden rotation_4 0 0 1 1.4718244343836337e-06
-  hidden position_4_0 2.1803054878153631e-07
-  hidden rotation_5 0 1 0 2.1900144899933154e-07
-  hidden rotation_6 0 0 0.9999999999999999 0.49974945540689086
-  hidden position_6_0 0.00012131848685336069
-  hidden rotation_7 0 1 0 0.00012131848633914113
-  hidden position_7_0 6.990473251831616e-08
-  hidden rotation_8 1 0 0 7.300048299977715e-08
-  hidden position_8_0 4.787639494614491e-05
-  hidden rotation_9 0 0.9999999999999999 0 4.787639900160183e-05
-  hidden position_9_0 5.001038751476923e-07
-  hidden rotation_10 1 0 0 5.004660971089217e-07
-  hidden position_10_0 1.0652995789008411e-05
-  hidden rotation_11 0 1 0 1.0652985938178653e-05
-  hidden position_11_0 -4.55460108249193e-06
-  hidden rotation_12 1 0 0 1.1537541006406249e-05
-  hidden position_13_0 0.049999963064273796
-  hidden position_13_1 0.04999999918326594
-  hidden translation_14 0 0.06542496306427378 0
-  hidden translation_15 0 -0.06542499918326596 0
-  hidden translation_16 0 0 -7.625831050699018e-06
-  translation -8.2231870285944 -6.254302816371655 -0.003394223573747898
-  rotation -0.0011147434393687032 -0.0014386162824282132 0.9999983438637567 -2.2252120722909643
-  controller "fetch_controller"
-  controllerArgs [
-    ""
-    ""
-  ]
-}
 Group {
   children [
     Cabinet {
-      hidden position_6_0 -0.0001279395046864699
-      hidden translation_7 0.00012729980681575265 -8.143337781874038e-09 0
-      hidden rotation_7 0 0 -1 0.0001279395060718244
-      hidden position_10_0 -0.0001279395046855372
-      hidden translation_11 -0.00012729980681482463 8.143337781874038e-09 0
-      hidden rotation_11 0 0 -1 0.0001279395060718244
-      hidden position_14_0 -3.5527598352300693e-13
-      hidden position_22_0 -3.5527598352300693e-13
-      hidden position_30_0 -3.5527598352300693e-13
-      hidden position_38_0 -5.329166573570835e-13
       translation -6.37 -9.88 -5.94569e-09
       rotation 9.58976e-09 9.58979e-09 -1 -1.5707953071795862
       name "cabinet(1)"
@@ -287,12 +760,6 @@ Group {
       ]
     }
     Cabinet {
-      hidden position_6_0 0.00012793950468334685
-      hidden translation_7 -0.00012729980681264522 -8.143337781874038e-09 0
-      hidden rotation_7 0 0 1 0.0001279395060718244
-      hidden position_10_0 -0.00012793950468242604
-      hidden translation_11 -0.00012729980681172901 8.143337781874038e-09 0
-      hidden rotation_11 0 0 -1 0.0001279395060718244
       translation -9.66881 -7.71845 0
       rowsHeights [
         0.2, 0.2, 0.2, 0.2, 0.2
@@ -307,6 +774,32 @@ Group {
       name "table(1)"
       size 1 2.5 0.74
     }
+    DEF flaconA MedicineBottleB {
+      translation -6.95826 -6.10623 0.763786
+      rotation 0.00034043983180264233 -0.002621488704829952 -0.9999965059427415 0.287166
+      name "medicine bottle b(10)"
+      physics Physics {
+        density 100
+        damping Damping {
+        }
+      }
+    }
+    DEF medicineA Solid {
+      translation -7.24479 -7.10769 0.78972
+      rotation 0 1 0 4.38702e-06
+      children [
+        DEF med Shape {
+          geometry Cylinder {
+            height 0.1
+            radius 0.02
+          }
+        }
+      ]
+      name "solid(1)"
+      boundingObject USE med
+      physics Physics {
+      }
+    }
     Table {
       translation -4.56 -5.53 0
       rotation 0 0 1 -1.5707953071795862
@@ -317,8 +810,8 @@ Group {
 Group {
   children [
     DEF flacon MedicineBottleB {
-      translation -9.6 -9.6 0.877961
-      rotation 0.03701545467691535 0.9992428052023543 0.011986340825738608 1.11488e-14
+      translation -9.613993018032437 -9.600226074936245 0.8782846905988575
+      rotation 0.018565004632674756 0.788301666873904 -0.6150087988043856 0.020078352474333386
       name "medicine bottle b(4)"
       physics Physics {
         mass 0.2
@@ -332,8 +825,8 @@ Group {
       }
     }
     DEF flacon MedicineBottleB {
-      translation -9.5 -9.6 0.877961
-      rotation 0.03701545467691535 0.9992428052023543 0.011986340825738608 1.11488e-14
+      translation -9.508112434194972 -9.59998723386 0.8765293486089025
+      rotation 0.007667199759271114 0.9044554444211673 0.4264991947293219 0.005070919597618568
       name "medicine bottle b(3)"
       physics Physics {
         mass 0.2
@@ -347,8 +840,8 @@ Group {
       }
     }
     DEF flacon MedicineBottleB {
-      translation -9.4 -9.6 0.877961
-      rotation 0.03701545467691535 0.9992428052023543 0.011986340825738608 1.11488e-14
+      translation -9.408235208677025 -9.599819198629843 0.877640023139021
+      rotation -0.007805582355867845 0.9990794119295391 -0.042182953222976285 0.08915205481885162
       name "medicine bottle b(1)"
       physics Physics {
         mass 0.2
@@ -362,8 +855,8 @@ Group {
       }
     }
     DEF flacon MedicineBottleB {
-      translation -9.3 -9.6 0.877961
-      rotation 0.03701545467691535 0.9992428052023543 0.011986340825738608 1.11488e-14
+      translation -9.309156326697622 -9.599995523746783 0.8790048081974153
+      rotation 0.015598456227306504 0.9992656979429997 -0.03499647236243493 0.07728349682158088
       name "medicine bottle b(2)"
       physics Physics {
         mass 0.2
@@ -377,8 +870,8 @@ Group {
       }
     }
     DEF flacon MedicineBottleC {
-      translation -9.6 -7.2 0.877961
-      rotation 0.14146715215441805 0.9897539624080901 -0.019342666796582423 8.40167e-15
+      translation -9.6 -7.2 0.8779607667517707
+      rotation 0.1593088681087549 0.9870040273577236 -0.021065007038719972 8.72672230656648e-15
       physics Physics {
         mass 0.2
         centerOfMass [
@@ -392,7 +885,7 @@ Group {
     }
     DEF flacon MedicineBottle {
       translation -9.6 -9.5 0.8779607599999999
-      rotation 0.03704174869012224 0.999265778617256 0.009788387938098993 1.1148821544698589e-14
+      rotation 0.056784762204210575 0.9983262237519694 0.010965479950459291 1.150082752621056e-14
       name "medicine bottle(5)"
       physics Physics {
         mass 0.2
@@ -407,7 +900,7 @@ Group {
     }
     DEF flacon MedicineBottle {
       translation -9.5 -9.5 0.8779607599999999
-      rotation 0.03704174869012224 0.999265778617256 0.009788387938098993 1.1148821544698589e-14
+      rotation 0.056784762204210575 0.9983262237519694 0.010965479950459291 1.150082752621056e-14
       name "medicine bottle(6)"
       physics Physics {
         mass 0.2
@@ -422,7 +915,7 @@ Group {
     }
     DEF flacon MedicineBottle {
       translation -9.4 -9.5 0.8779607599999999
-      rotation 0.03704174869012224 0.999265778617256 0.009788387938098993 1.1148821544698589e-14
+      rotation 0.056784762204210575 0.9983262237519694 0.010965479950459291 1.150082752621056e-14
       name "medicine bottle(7)"
       physics Physics {
         mass 0.2
@@ -437,7 +930,7 @@ Group {
     }
     DEF flacon MedicineBottle {
       translation -9.3 -9.5 0.8779607599999999
-      rotation 0.03704174869012224 0.999265778617256 0.009788387938098993 1.1148821544698589e-14
+      rotation 0.056784762204210575 0.9983262237519694 0.010965479950459291 1.150082752621056e-14
       name "medicine bottle(8)"
       physics Physics {
         mass 0.2
@@ -451,8 +944,8 @@ Group {
       }
     }
     DEF flacon MedicineBottleC {
-      translation -9.6 -9.4 0.877961
-      rotation 0.14146715215441805 0.9897539624080901 -0.019342666796582423 8.40167e-15
+      translation -9.6 -9.4 0.8779607667517707
+      rotation 0.1301108892712748 0.9913307602556863 -0.0182888015988154 8.470654275579815e-15
       name "medicine bottle c(1)"
       physics Physics {
         mass 0.2
@@ -466,8 +959,8 @@ Group {
       }
     }
     DEF flacon MedicineBottleC {
-      translation -9.5 -9.4 0.877961
-      rotation 0.14146715215441805 0.9897539624080901 -0.019342666796582423 8.40167e-15
+      translation -9.5 -9.4 0.8779607667517707
+      rotation 0.16010324701242437 0.9869332222794213 -0.018159434386490113 8.323505608630483e-15
       name "medicine bottle c(2)"
       physics Physics {
         mass 0.2
@@ -481,8 +974,8 @@ Group {
       }
     }
     DEF flacon MedicineBottleC {
-      translation -9.4 -9.4 0.877961
-      rotation 0.14146715215441805 0.9897539624080901 -0.019342666796582423 8.40167e-15
+      translation -9.4 -9.4 0.8779607667517707
+      rotation 0.16010324701242437 0.9869332222794213 -0.018159434386490113 8.323505608630483e-15
       name "medicine bottle c(3)"
       physics Physics {
         mass 0.2
@@ -496,8 +989,8 @@ Group {
       }
     }
     DEF flacon MedicineBottleC {
-      translation -9.3 -9.4 0.877961
-      rotation 0.14146715215441805 0.9897539624080901 -0.019342666796582423 8.40167e-15
+      translation -9.3 -9.4 0.8779607667517707
+      rotation 0.16010324701242437 0.9869332222794213 -0.018159434386490113 8.323505608630483e-15
       name "medicine bottle c(4)"
       physics Physics {
         mass 0.2
@@ -512,7 +1005,7 @@ Group {
     }
     DEF flacon MedicineBottle {
       translation -9.6 -9.3 0.8779607599999999
-      rotation 0.03704174869012224 0.999265778617256 0.009788387938098993 1.1148821544698589e-14
+      rotation 0.056784762204210575 0.9983262237519694 0.010965479950459291 1.150082752621056e-14
       name "medicine bottle(10)"
       physics Physics {
         mass 0.2
@@ -527,7 +1020,7 @@ Group {
     }
     DEF flacon MedicineBottle {
       translation -9.5 -9.3 0.8779607599999999
-      rotation 0.03704174869012224 0.999265778617256 0.009788387938098993 1.1148821544698589e-14
+      rotation 0.056784762204210575 0.9983262237519694 0.010965479950459291 1.150082752621056e-14
       name "medicine bottle(16)"
       physics Physics {
         mass 0.2
@@ -542,7 +1035,7 @@ Group {
     }
     DEF flacon MedicineBottle {
       translation -9.4 -9.3 0.8779607599999999
-      rotation 0.03704174869012224 0.999265778617256 0.009788387938098993 1.1148821544698589e-14
+      rotation 0.056784762204210575 0.9983262237519694 0.010965479950459291 1.150082752621056e-14
       name "medicine bottle(17)"
       physics Physics {
         mass 0.2
@@ -557,7 +1050,7 @@ Group {
     }
     DEF flacon MedicineBottle {
       translation -9.3 -9.3 0.8779607599999999
-      rotation 0.03704174869012224 0.999265778617256 0.009788387938098993 1.1148821544698589e-14
+      rotation 0.056784762204210575 0.9983262237519694 0.010965479950459291 1.150082752621056e-14
       name "medicine bottle(18)"
       physics Physics {
         mass 0.2
@@ -571,8 +1064,8 @@ Group {
       }
     }
     DEF flacon MedicineBottleB {
-      translation -9.6 -9.6 0.877961
-      rotation 0.03701545467691535 0.9992428052023543 0.011986340825738608 1.11488e-14
+      translation -9.567204778932817 -9.600035609575674 0.8775647177340367
+      rotation 0.021932714346097608 -0.9944682119876427 0.10272259433792248 0.03582376002374001
       name "medicine bottle b(5)"
       physics Physics {
         mass 0.2
@@ -586,8 +1079,8 @@ Group {
       }
     }
     DEF flacon MedicineBottleB {
-      translation -9.5 -9.6 0.877961
-      rotation 0.03701545467691535 0.9992428052023543 0.011986340825738608 1.11488e-14
+      translation -9.461729760366563 -9.602422405483981 0.8686246981253049
+      rotation -0.014537282252002591 -0.3115028822717319 0.9501340020024169 0.11830305593616922
       name "medicine bottle b(6)"
       physics Physics {
         mass 0.2
@@ -601,8 +1094,8 @@ Group {
       }
     }
     DEF flacon MedicineBottleB {
-      translation -9.4 -9.6 0.877961
-      rotation 0.03701545467691535 0.9992428052023543 0.011986340825738608 1.11488e-14
+      translation -9.35902401025627 -9.599701601420941 0.8754264282277112
+      rotation -0.03598394572000098 0.996829971158707 -0.0709588912691802 0.0824425487227138
       name "medicine bottle b(7)"
       physics Physics {
         mass 0.2
@@ -616,8 +1109,8 @@ Group {
       }
     }
     DEF flacon MedicineBottleB {
-      translation -9.3 -9.6 0.877961
-      rotation 0.03701545467691535 0.9992428052023543 0.011986340825738608 1.11488e-14
+      translation -9.243130138818376 -9.59990295953873 0.8839214002225634
+      rotation -0.004519552909654047 0.999980559835407 0.004295764514325839 0.6794487184066699
       name "medicine bottle b(8)"
       physics Physics {
         mass 0.2
@@ -631,8 +1124,8 @@ Group {
       }
     }
     DEF flacon MedicineBottleC {
-      translation -9.6 -9.1 0.877961
-      rotation 0.14146715215441805 0.9897539624080901 -0.019342666796582423 8.40167e-15
+      translation -9.6 -9.1 0.8779607667517707
+      rotation 0.16010324701242437 0.9869332222794213 -0.018159434386490113 8.323505608630483e-15
       name "medicine bottle c(5)"
       physics Physics {
         mass 0.2
@@ -646,8 +1139,8 @@ Group {
       }
     }
     DEF flacon MedicineBottleC {
-      translation -9.5 -9.1 0.877961
-      rotation 0.14146715215441805 0.9897539624080901 -0.019342666796582423 8.40167e-15
+      translation -9.5 -9.1 0.8779607667517707
+      rotation 0.16010324701242437 0.9869332222794213 -0.018159434386490113 8.323505608630483e-15
       name "medicine bottle c(6)"
       physics Physics {
         mass 0.2
@@ -661,8 +1154,8 @@ Group {
       }
     }
     DEF flacon MedicineBottleC {
-      translation -9.4 -9.1 0.877961
-      rotation 0.14146715215441805 0.9897539624080901 -0.019342666796582423 8.40167e-15
+      translation -9.4 -9.1 0.8779607667517707
+      rotation 0.16010324701242437 0.9869332222794213 -0.018159434386490113 8.323505608630483e-15
       name "medicine bottle c(7)"
       physics Physics {
         mass 0.2
@@ -676,8 +1169,8 @@ Group {
       }
     }
     DEF flacon MedicineBottleC {
-      translation -9.3 -9.1 0.877961
-      rotation 0.14146715215441805 0.9897539624080901 -0.019342666796582423 8.40167e-15
+      translation -9.3 -9.1 0.8779607667517707
+      rotation 0.16010324701242437 0.9869332222794213 -0.018159434386490113 8.323505608630483e-15
       name "medicine bottle c(8)"
       physics Physics {
         mass 0.2
@@ -691,4 +1184,9 @@ Group {
       }
     }
   ]
+}
+DEF FETCH fetch_webots {
+  translation -8.27376 -6.68941 -0.00210388
+  controller "map_extractor"
+  supervisor TRUE
 }
