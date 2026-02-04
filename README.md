@@ -73,6 +73,6 @@ COG_PROJECT/
 
 Now, Running the Simulation:
 
-1. Open Webots and load the Fetch robot world.
+1. Open Webots and load the Hospital world.
 
 2. Choose the controller "webot_moveit"
