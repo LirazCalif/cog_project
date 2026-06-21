@@ -17,7 +17,7 @@ The project integrates:
 ---
 
 ## Project Structure
-
+```bash
 COG_PROJECT/
 │
 ├── controllers/
@@ -36,7 +36,7 @@ COG_PROJECT/
 ├── fetch_webots.proto
 ├── MedicineBottle.proto
 └── .gitignore
-
+```
 
 ---
 
