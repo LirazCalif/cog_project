@@ -1,6 +1,9 @@
-from controller import Robot, Motor, PositionSensor
+from controller import Robot, Motor, PositionSensor, Camera
 import time
 import math
+import numpy as np
+import cv2
+
 
 class FetchController:
     def __init__(self):
@@ -67,6 +70,13 @@ class FetchController:
                 "ymin": -7.53, "ymax": -3.53
             }
         ]
+
+        # initialize camera
+        self.camera = self.robot.getDevice("hand_camera")
+        self.camera.enable(self.timestep)
+
+        self.cam_width = self.camera.getWidth()
+        self.cam_height = self.camera.getHeight()
 
     # ---------------- Base motion ----------------
     def move(self, linear_velocity, angular_velocity):
@@ -158,6 +168,17 @@ class FetchController:
         self.motors['wrist_roll_joint'].setPosition(self.wrist_roll_angle)
         self.motors['wrist_roll_joint'].setVelocity(self.joint_info['wrist_roll_joint'])
         for _ in range(30):
+            self.step()
+
+    def align_gripper_for_upright_object(self):
+        # Make wrist_roll rotate around bottle vertical axis
+        self.motors['wrist_flex_joint'].setPosition(-math.pi / 2)
+        self.motors['wrist_flex_joint'].setVelocity(self.joint_info['wrist_flex_joint'])
+
+        self.motors['wrist_roll_joint'].setPosition(0.0)
+        self.motors['wrist_roll_joint'].setVelocity(self.joint_info['wrist_roll_joint'])
+
+        for _ in range(20):
             self.step()
 
     # ---------------- Pick & Place ----------------
@@ -504,6 +525,82 @@ class FetchController:
 
         self.go_to_location_safe(target_x, target_y)
 
+    def get_camera_image(self):
+        """
+        Returns the current camera image as a BGR OpenCV image
+        """
+        self.robot.step(self.timestep)
+        image = self.camera.getImage()
+        if image is None:
+            return None
+
+        img = np.frombuffer(image, np.uint8).reshape(
+            (self.cam_height, self.cam_width, 4)
+        )
+        return cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)
+
+    def scan_qr(self):
+        """
+        Scans the camera image for a QR code.
+        Returns decoded text or None.
+        """
+        img = self.get_camera_image()
+        if img is None:
+            return None
+
+        detector = cv2.QRCodeDetector()
+        data, bbox, _ = detector.detectAndDecode(img)
+
+        if bbox is not None and data:
+            print(f"[QR FOUND] {data}")
+            return data
+
+        return None
+
+    def rotate_bottle_for_qr(self, max_steps=8):
+        """
+        Rotates the bottle in hand until a QR is detected
+        """
+        step_angle = math.pi / 4  # 45°
+
+        for i in range(max_steps):
+            qr = self.scan_qr()
+            if qr is not None:
+                return qr
+
+            # rotate bottle slightly
+            self.wrist_roll_angle += step_angle
+            self.wrist_roll_angle = (
+                                            (self.wrist_roll_angle + math.pi) % (2 * math.pi)
+                                    ) - math.pi
+
+            self.motors['wrist_roll_joint'].setPosition(self.wrist_roll_angle)
+            self.motors['wrist_roll_joint'].setVelocity(1.0)
+
+            for _ in range(20):
+                self.step()
+
+        print("[QR] Not found after full rotation")
+        return None
+
+    def is_correct_medicine(self, required_med):
+        """
+        required_med: e.g. "MED_A"
+        """
+        qr_data = self.rotate_bottle_for_qr()
+
+        if qr_data is None:
+            print("[ERROR] No QR detected")
+            return False
+
+        if qr_data == required_med:
+            print("[MATCH] Correct medicine found")
+            return True
+        else:
+            print(f"[MISMATCH] Found {qr_data}, expected {required_med}")
+            return False
+
+
     # ---------------- Helper ----------------
     def step(self):
         """
@@ -591,10 +688,25 @@ class FetchController:
 
         print("Test complete: bottle picked, arm moved, bottle replaced.")
 
+    def test_qr_bottle(self):
+        print("=== QR Bottle Test ===")
+
+        # Assume bottle already picked up
+        required = "MED_B"
+
+        if self.is_correct_medicine(required):
+            print("✔ Proceeding to destination")
+        else:
+            print("✘ Wrong bottle, put it back")
+
+        print("=== Test Complete ===")
+
 
 def main():
     controller = FetchController()
     time.sleep(1.0)
+
+    controller.test_qr_bottle()
 
     # Run unified test
     controller.test_pickup_bottle()
